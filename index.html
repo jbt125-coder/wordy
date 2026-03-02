@@ -2,45 +2,37 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>WORDY ULTRA</title>
+<title>WORDY</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1,
+maximum-scale=1, user-scalable=no">
 
 <style>
 
 body{
     font-family: Arial, sans-serif;
     text-align:center;
-    background:#ffffff;
-    color:black;
+    background:white;
     margin:0;
 }
 
-#gameContainer{
-    max-width:520px;
-    margin:auto;
-    padding-top:15px;
-}
+/* Title */
 
 #title{
-    font-size:70px;
+    font-size:50px;
     font-weight:bold;
-    letter-spacing:8px;
     animation: glowCycle 3s infinite;
 }
 
 @keyframes glowCycle{
-    0%{ color:purple; text-shadow:0 0 10px purple;}
-    33%{ color:red; text-shadow:0 0 10px red;}
-    66%{ color:gold; text-shadow:0 0 10px orange;}
-    100%{ color:purple; text-shadow:0 0 10px purple;}
+    0%{color:purple;}
+    33%{color:red;}
+    66%{color:gold;}
+    100%{color:purple;}
 }
 
-#fridayMessage{
-    margin-top:8px;
-    font-weight:bold;
-    color:#444;
-}
+/* Board */
 
 #board{
     display:flex;
@@ -48,195 +40,178 @@ body{
     align-items:center;
 }
 
-.row{
-    display:flex;
-}
+.row{display:flex;}
 
 .tile{
-    width:58px;
-    height:58px;
+    width:52px;
+    height:52px;
     border:2px solid #d3d6da;
     margin:3px;
-    font-size:32px;
-    line-height:58px;
+    font-size:28px;
+    line-height:52px;
     font-weight:bold;
     text-transform:uppercase;
     background:white;
+    box-sizing:border-box;
 }
 
 .correct{background:#6aaa64;color:white;border-color:#6aaa64;}
 .present{background:#c9b458;color:white;border-color:#c9b458;}
 .absent{background:#787c7e;color:white;border-color:#787c7e;}
 
-#status{
-    margin:15px;
-    font-size:18px;
+/* Keyboard */
+
+#keyboard{
+    margin-top:20px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
 }
 
-#hiddenInput{
-    position:absolute;
-    opacity:0;
-    pointer-events:none;
+.keyboard-row{
+    display:flex;
+    gap:6px;
+    justify-content:center;
+    width:100%;
 }
 
-button{
-    padding:10px;
+.key{
+    flex:1;
+    max-width:38px;
+    height:42px;
+
+    background:#e6ebef;
+    border-radius:6px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-weight:bold;
     font-size:16px;
+    user-select:none;
 }
+
+/* Special Keys */
+
+.specialKey{
+    flex:1.5;
+    max-width:70px;
+    background:#4a90e2;
+    color:white;
+}
+
+/* Keyboard Colors */
+
+.key.correct{background:#6aaa64;color:white;}
+.key.present{background:#c9b458;color:white;}
+.key.absent{background:#787c7e;color:white;}
 
 </style>
 </head>
 
 <body>
 
-<div id="gameContainer">
-
-<div id="title">WORDY</div>
-<div id="fridayMessage"></div>
+<h1 id="title">WORDY</h1>
 
 <div id="board"></div>
-
-<div id="status">Tap screen and type (5 letters)</div>
-
-<button onclick="shareResult()">📩 Copy Result</button>
-
-</div>
-
-<input id="hiddenInput" type="text" autocapitalize="off" autocomplete="off">
+<div id="keyboard"></div>
 
 <script>
 
-/* =============================
-   ULTRA PRO WORD BANK (~1300 words)
-   Mix of common + smart difficulty lexical set
-============================= */
 
-const wordBank = [
+/* ===========================
+ BIGGEST SAFE WORD BANK BLOCK
+ (~500 5-letter words)
+=========================== */
 
-"APPLE","BRAVE","CRANE","DREAM","FLAME","GRASS","HOUSE","LIGHT","MUSIC","NORTH",
+const wordBank=[
+
+"APPLE","BRAVE","LEASH","CRANE","DREAM","FLAME","GRASS","HOUSE","LIGHT","MUSIC","NORTH",
 "OCEAN","PLANT","QUEST","ROBOT","STONE","TIGER","UNITY","VALOR","WATER","YOUTH",
+"ABHOR","ACRID","ADAPT","ADMIT","AGENT","ALERT","ALIAS","ALIVE","AMBER","ANGLE",
+"ANKLE","ANNEX","APART","APPLY","ARBOR","ARGUE","ARROW","ASSET","BACON","BADGE",
+"BAGEL","BALMY","BANAL","BARGE","BASIC","BEACH","BEAST","BEGIN","BELLY","BIRTH",
+"BLAZE","BLEED","BLINK","BLOOM","BOARD","BOOST","BRAND","BREAD","CANAL","CANDY",
+"CATCH","CAUSE","CHAIR","CHART","CHEER","CHIEF","CIVIL","CLAIM","CLASS","CLEAN",
+"CLEAR","CLOTH","COAST","COLOR","CRAFT","CRANE","CRASH","CROWN","DAILY","DANCE",
+"DEATH","DELAY","DEPTH","DRIVE","EARTH","ELECT","EMPTY","ENJOY","ENTER","EQUAL",
+"ERROR","EVENT","FAITH","FALSE","FAVOR","FEAST","FIELD","FINAL","FIRST","FLAME",
+"FLEET","FOCUS","FORCE","FORGE","FOUND","FRAME","FRESH","FRONT","FRUIT","GAMUT",
+"GLEAN","GRADE","GRANT","GRAPH","GROUP","GUARD","GUEST","HAPPY","HEART","HONEY",
+"HORSE","HUMAN","IMAGE","INPUT","ISSUE","JAUNT","JOUST","KIOSK","LABEL","LARGE",
+"LAUGH","LEARN","LEVEL","LOCAL","LOYAL","LUCKY","MAGIC","MAJOR","MATCH","METER",
+"MODEL","MONEY","MOUSE","MOUTH","NERVE","NIGHT","NOBLE","NOISE","OFFER","ORDER",
+"OTHER","OVERT","PAINT","PANEL","PARTY","PEACE","PHONE","PHOTO","PILOT","PIXEL",
+"PLANE","PLANT","PLATE","POINT","POWER","PRIME","PRINT","PRISM","QUEEN","QUEST",
+"QUICK","QUIET","RADIO","READY","REALM","REPLY","RIVER","ROBOT","ROUND","ROUTE",
+"SCALE","SCENE","SCORE","SHAPE","SHINE","SHOCK","SHORE","SIGHT","SMILE","SOLID",
+"SPACE","STAFF","STAGE","START","STATE","STEEL","STICK","STORM","STORY","SUGAR",
+"SUPER","TABLE","TASTE","TEACH","THEME","THING","TITLE","TOUCH","TRACK","TRAIN",
+"TRUST","TRUTH","UNDER","UNION","URBAN","USUAL","VALUE","VOICE","WASTE","WATCH",
+"WORLD","WORTH","YEARN","YIELD","YOUNG","ZESTY","ZONAL","ZEBRA",
 
-"ABHOR","ACRID","ADAPT","ADMIT","ADOBE","ADORE","ADORN","AGENT","AGILE","AGONY",
-"AHEAD","ALERT","ALIAS","ALIVE","ALLEY","ALLOT","ALLOW","ALOFT","ALONE","AMASS",
-"AMBER","AMEND","AMPLE","ANGEL","ANGER","ANGLE","ANGRY","ANKLE","ANNEX","ANVIL",
-"APART","APPLE","APPLY","APTLY","ARBOR","ARDOR","ARGUE","ARISE","ARMOR","AROSE",
-"ARRAY","ARROW","ASIDE","ASSET","AUDIO","AVAIL","AVERT","AWAKE","AWARD","AWARE",
+/* Additional Expanded Set */
 
-"BACON","BADGE","BAGEL","BALER","BALMY","BANAL","BARGE","BARON","BASIN","BASIC",
-"BATCH","BATTY","BEACH","BEADY","BEAST","BEEFY","BEGIN","BEING","BELCH","BELIE",
-"BELLY","BENCH","BERTH","BESET","BIBLE","BICEP","BILGE","BINGE","BIRCH","BIRTH",
+"ABACK","ACORN","ADMIN","ADORE","AFTER","AGONY","ALARM","AMONG","ANGER","APRON",
+"ASHEN","ASIDE","ATONE","AUDIO","AWARE","AWFUL","BAKER","BALER","BASIC","BASIN",
+"BEING","BELCH","BERTH","BILGE","BISON","BLAST","BLEAK","BLUFF","BRISK","BROIL",
+"BRUNT","CABIN","CACHE","CAMEO","CANNY","CARGO","CARVE","CATCH","CAUSE","CAVIL",
+"CERAM","CHAFE","CHAMP","CHASM","CHEAT","CHESS","CHIME","CIVIC","CIVIL","CLAMP",
+"CLEFT","CLIMB","CLOUT","COACH","COALY","COBRA","COMET","CONCH","CORAL","CORER",
+"COTER","COULD","COVET","COWER","CRAFT","CRAMP","CRANK","CREAM","CREED","CREEP",
+"CRIME","CRISP","CROAK","CROWD","CRYPT","DAIRY","DALLY","DEBIT","DEBUT","DECAL",
+"DECAY","DECOY","DELTA","DENSE","DEPOT","DERBY","DICEY","DIGIT","DINER","DIRGE",
+"DISCO","DIVER","DODGE","DOILY","DOING","DOUBT","DOWRY","DOZEN","DRAIN","DRIFT",
+"DROOP","DRUNK","EAGER","EAGLE","EARLY","EDICT","EIGHT","ELBOW","ELITE","EMPTY",
+"ENNUI","EPOXY","ERASE","ETHER","EVADE","EVOKE","EXACT","EXALT","EXERT","EXILE",
+"FAINT","FANCY","FATAL","FIBER","FICUS","FIELD","FIERY","FILTH","FINCH","FIRER",
+"FIXER","FLAIR","FLASK","FLEET","FLINT","FLOCK","FLOOD","FLORA","FLUKE","FOAMY",
+"FORUM","FRAIL","FRAUD","FROST","FUMED","FUNNY","FUROR","GAFFE","GAMER","GAMMA",
+"GEESE","GHOST","GIRTH","GLASS","GLEAN","GLIDE","GLOOM","GNASH","GONER","GOURD",
+"GRACE","GRADE","GRAFT","GRAIN","GRAPE","GRASP","GRATE","GRAVY","GREAT","GREEN",
+"GRIEF","GRILL","GRIND","GROIN","GROSS","GROWL","GRUEL","GUILD","HABIT","HASTE",
+"HAVEN","HAZEL","HEATH","HEIST","HELIX","HILLY","HOMER","HOVER","HUMID","HUSKY",
 
-"BLADE","BLAME","BLAND","BLAST","BLAZE","BLEAK","BLEAT","BLEED","BLEND","BLINK",
-"BLOAT","BLOCK","BLOOM","BLUFF","BLUNT","BLURT","BOARD","BOAST","BONUS","BOOST",
-
-"BRAIN","BRAND","BRASH","BRASS","BRAVE","BREAD","BREAK","BRIAR","BRICK","BRIDE",
-
-"CANAL","CANDY","CARGO","CARVE","CASTE","CATCH","CAUSE","CEDAR","CHAMP","CHAOS",
-"CHART","CHEER","CHEST","CHIEF","CHILL","CHOIR","CIVIC","CIVIL","CLAIM","CLASS",
-"CLEAN","CLEAR","CLERK","CLICK","CLIMB","CLOCK","CLOTH","COAST","COLOR","COMET",
-
-"CRAFT","CRANE","CRASH","CRATE","CREEK","CREST","CRIME","CROWD","CROWN","CUBIC",
-
-"DAILY","DAIRY","DANCE","DEALT","DEATH","DEBIT","DELAY","DELTA","DEPTH","DEVIL",
-"DIGIT","DILLY","DIRTY","DISCO","DITCH","DOING","DOUBT","DRAFT","DRAMA","DRINK",
-"DRIVE","DROOP","DRYLY",
-
-"EAGER","EAGLE","EARLY","EARTH","EASEL","EATEN","EBONY","ECHOY","EDICT","EDIFY",
-"EERIE","EJECT","ELATE","ELDER","ELECT","ELEGY","ELITE","EMBER","EMPTY","ENACT",
-
-"ENEMY","ENJOY","ENTER","ENTRY","EPOCH","EQUAL","ERROR","ESSAY","EVENT","EVERY",
-
-"FAITH","FALSE","FANCY","FARCE","FAVOR","FEAST","FERRY","FIBER","FIELD","FIERY",
-"FINAL","FINCH","FIRST","FISHY","FLAIR","FLAME","FLANK","FLASH","FLEET","FLINT",
-
-"FOCUS","FORCE","FORGE","FORUM","FOUND","FRAME","FRAUD","FRESH","FRONT","FRUIT",
-
-"GAMMA","GAMUT","GLEAN","GLIDE","GLOBE","GLORY","GNASH","GRADE","GRAIN","GRANT",
-"GRAPE","GRAPH","GRASS","GRIND","GROUP","GUARD","GUEST","GUIDE",
-
-"HABIT","HAIRY","HAPPY","HARDY","HARSH","HASTE","HATCH","HEART","HEATH","HEAVY",
-"HEDGE","HEIST","HELIX","HONEY","HORSE","HOTEL","HUMAN","HUMID",
-
-"ICILY","IMAGE","IMBUE","INANE","INERT","INFER","INPUT","IRONY","ISLET","ISSUE",
-
-"JAUNT","JAZZY","JELLY","JOINT","JOUST","JUICE","JUMBO",
-
-"KAYAK","KIOSK","KNACK","KNAVE","KNEEL","KNIFE","KNOCK",
-
-"LABEL","LANCE","LARGE","LATCH","LATER","LAUGH","LEARN","LEAST","LEMON",
-"LEVEL","LIGHT","LINEN","LIVER","LOCAL","LOGIC","LOYAL","LUCKY","LUNCH",
-
-"MAGIC","MAJOR","MARCH","MARRY","MATCH","MAYOR","MERCY","METAL","METER",
-"MIGHT","MODEL","MONEY","MORAL","MOUSE","MOUTH","MUSIC",
-
-"NARROW","NAIVE","NERVE","NIGHT","NOBLE","NOISE","NORTH",
-
-"OCEAN","OFFER","ORDER","OTHER","OUTER","OVERT","OZONE",
-
-"PAINT","PANEL","PARTY","PEACE","PHASE","PHONE","PHOTO","PILOT",
-"PIXEL","PLANE","PLANT","PLATE","POINT","POWER","PRIME","PRINT","PRISM",
-
-"QUACK","QUAIL","QUARK","QUASH","QUEEN","QUERY","QUEST","QUICK","QUIET",
-
-"RADIO","RAINY","REACH","READY","REALM","REACT","REPLY","RIVER","ROBOT",
-"ROAST","ROUND","ROUTE","ROYAL",
-
-"SCALE","SCENE","SCOPE","SCORE","SHAPE","SHARE","SHINE","SHOCK","SHORE",
-"SIGHT","SILKY","SIXTH","SKILL","SMILE","SOLID","SOLVE","SPACE","SPARE",
-
-"STAFF","STAGE","STAIR","START","STATE","STEAM","STEEL","STICK","STORM","STORY",
-
-"SUGAR","SUPER","TABLE","TASTE","TEACH","TENTH","THEFT","THEME","THICK",
-"THING","THIRD","THOSE","TIGHT","TITLE","TODAY","TONIC","TOUCH","TOUGH",
-
-"TRACK","TRADE","TRAIN","TRIAL","TRUST","TRUTH","TWICE",
-
-"UNDER","UNION","UNTIL","UPPER","URBAN","USUAL",
-
-"VALUE","VIDEO","VOICE","WASTE","WATCH","WEARY","WEIGH","WHOLE","WORLD","WORTH",
-
-"YEARN","YIELD","YOUNG","ZESTY","ZONAL","ZEBRA"
+"ZONED","ZONER","ZAPPY","ZAPPY","ZONIC"
 
 ];
 
-/* =============================
-   Deterministic Daily Seed Engine
-============================= */
 
-function generateSeed(){
+
+const wordSet=new Set(wordBank);
+
+/* Seed Engine */
+
+function seed(){
     let d=new Date();
-    return d.getFullYear()*10000 +
-           (d.getMonth()+1)*100 +
+    return d.getFullYear()*10000+
+           (d.getMonth()+1)*100+
            d.getDate();
 }
 
-function hashSeed(n){
+function hash(n){
     n=((n>>16)^n)*0x45d9f3b;
     n=((n>>16)^n)*0x45d9f3b;
     return Math.abs((n>>16)^n);
 }
 
-function getDailyWord(){
-    let seed=generateSeed();
-    return wordBank[hashSeed(seed)%wordBank.length] || "APPLE";
-}
+const answer=wordBank[hash(seed())%wordBank.length];
 
-const answer=getDailyWord();
-
-/* =============================
-   Game State
-============================= */
+/* Game State */
 
 let attempts=0;
 let maxAttempts=6;
 let gameOver=false;
 let currentGuess="";
 
-/* Board Create */
+/* Board */
 
 const board=document.getElementById("board");
 
 for(let i=0;i<maxAttempts;i++){
+
     let row=document.createElement("div");
     row.className="row";
 
@@ -249,54 +224,68 @@ for(let i=0;i<maxAttempts;i++){
     board.appendChild(row);
 }
 
-/* Friday Message */
+/* Keyboard Layout */
 
-if(new Date().getDay()===5){
-    document.getElementById("fridayMessage").textContent=
-    "🔥 Friday Boss Word Activated — Good Luck";
-}
+const keyboardLayout=[
+["Q","W","E","R","T","Y","U","I","O","P"],
+["A","S","D","F","G","H","J","K","L"],
+["ENTER","Z","X","C","V","B","N","M","⌫"]
+];
 
-/* Keyboard Capture */
+const keyboard=document.getElementById("keyboard");
 
-const hiddenInput=document.getElementById("hiddenInput");
+/* Build Keyboard */
 
-document.body.addEventListener("click",()=>hiddenInput.focus());
+keyboardLayout.forEach(rowLetters=>{
 
-hiddenInput.addEventListener("input",function(e){
+    let row=document.createElement("div");
+    row.className="keyboard-row";
+
+    rowLetters.forEach(letter=>{
+
+        let key=document.createElement("div");
+        key.className="key";
+
+        if(letter==="ENTER" || letter==="⌫"){
+            key.classList.add("specialKey");
+        }
+
+        key.textContent=letter;
+
+        if(letter==="ENTER")
+            key.onclick=submitGuess;
+
+        else if(letter==="⌫")
+            key.onclick=()=>{
+                currentGuess=currentGuess.slice(0,-1);
+                renderRow();
+            };
+
+        else
+            key.onclick=()=>addLetter(letter);
+
+        row.appendChild(key);
+    });
+
+    keyboard.appendChild(row);
+});
+
+/* Gameplay */
+
+function addLetter(letter){
 
     if(gameOver) return;
 
-    let value=e.target.value.toUpperCase();
-    if(!value) return;
-
-    let ch=value[value.length-1];
-
-    if(/^[A-Z]$/.test(ch) && currentGuess.length<5){
-        currentGuess+=ch;
-    }
-
-    renderRow();
-    e.target.value="";
-});
-
-hiddenInput.addEventListener("keydown",function(e){
-
-    if(e.key==="Backspace"){
-        currentGuess=currentGuess.slice(0,-1);
+    if(letter.length===1 && currentGuess.length<5){
+        currentGuess+=letter;
         renderRow();
     }
-
-    if(e.key==="Enter"){
-        submitGuess();
-        e.preventDefault();
-    }
-});
-
-/* Rendering */
+}
 
 function renderRow(){
 
     let rows=document.querySelectorAll(".row");
+
     if(attempts>=rows.length) return;
 
     let tiles=rows[attempts].querySelectorAll(".tile");
@@ -306,25 +295,62 @@ function renderRow(){
     }
 }
 
-/* Guess Logic */
+/* Keyboard Color Matching */
+
+function updateKeyboardColors(){
+
+    let stateMap={};
+
+    document.querySelectorAll(".tile").forEach(tile=>{
+
+        let letter=tile.textContent;
+        if(!letter) return;
+
+        if(tile.classList.contains("correct"))
+            stateMap[letter]="correct";
+
+        else if(tile.classList.contains("present") &&
+                stateMap[letter]!=="correct")
+            stateMap[letter]="present";
+
+        else if(tile.classList.contains("absent") &&
+                !stateMap[letter])
+            stateMap[letter]="absent";
+    });
+
+    document.querySelectorAll(".key").forEach(key=>{
+
+        let letter=key.textContent;
+
+        if(stateMap[letter]){
+            key.classList.remove("correct","present","absent");
+            key.classList.add(stateMap[letter]);
+        }
+    });
+}
+
+/* Submit Guess */
 
 function submitGuess(){
 
-    if(currentGuess.length!==5) return;
+    if(currentGuess.length!==5 || gameOver) return;
 
-    let guess=currentGuess;
-    currentGuess="";
+    let guess=currentGuess.toUpperCase();
+
+    if(!wordSet.has(guess)){
+        alert("That word is not in this game but your dad loves you!!!");
+        return;
+    }
 
     let rows=document.querySelectorAll(".row");
     let tiles=rows[attempts].querySelectorAll(".tile");
 
-    let ansArr=answer.split("");
-    let guessArr=guess.split("");
-
+    let ans=answer.split("");
+    let g=guess.split("");
     let used=Array(5).fill(false);
 
     for(let i=0;i<5;i++){
-        if(guessArr[i]===ansArr[i]){
+        if(g[i]===ans[i]){
             tiles[i].classList.add("correct");
             used[i]=true;
         }
@@ -335,7 +361,7 @@ function submitGuess(){
         if(tiles[i].classList.contains("correct")) continue;
 
         for(let j=0;j<5;j++){
-            if(!used[j] && guessArr[i]===ansArr[j]){
+            if(!used[j] && g[i]===ans[j]){
                 tiles[i].classList.add("present");
                 used[j]=true;
                 break;
@@ -349,43 +375,20 @@ function submitGuess(){
     }
 
     attempts++;
+    currentGuess="";
+
+    updateKeyboardColors();
 
     if(guess===answer){
-        document.getElementById("status").textContent=
-        "🎉 You solved WORDY!";
+        alert("🎉 You solved WORDY!");
         gameOver=true;
         return;
     }
 
     if(attempts>=maxAttempts){
-        document.getElementById("status").textContent=
-        "Your dad loves you…but guess again… Word was "+answer;
+        alert("Word was "+answer);
         gameOver=true;
-        return;
     }
-
-    document.getElementById("status").textContent=
-    "Your dad loves you…but guess again… ("+(maxAttempts-attempts)+" left)";
-}
-
-/* Share */
-
-function shareResult(){
-
-    let output="WORDY ULTRA RESULT\nAttempts: "+attempts+"\n\n";
-
-    document.querySelectorAll(".row").forEach(r=>{
-        r.querySelectorAll(".tile").forEach(t=>{
-            if(t.classList.contains("correct")) output+="🟩";
-            else if(t.classList.contains("present")) output+="🟨";
-            else if(t.classList.contains("absent")) output+="⬛";
-            else output+="⬜";
-        });
-        output+="\n";
-    });
-
-    navigator.clipboard.writeText(output)
-    .then(()=>alert("Result copied"));
 }
 
 </script>
