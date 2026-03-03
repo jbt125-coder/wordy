@@ -115,6 +115,8 @@ body{
 
 <h1 id="title">WORDY</h1>
 
+<button id="copy-btn" style="display:none; margin: 10px auto; padding: 10px 20px; font-weight:bold; cursor:pointer; background:#4a90e2; color:white; border:none; border-radius:5px;">COPY RESULTS</button>
+
 <div id="board"></div>
 <div id="keyboard"></div>
 
@@ -767,7 +769,64 @@ const wordBank = [
 "UPPER","UPSEA","UPSET","UPSOT","UPTER","URALS","URANE","URANS","URANY","URBAN",
 "UREAL","UREAS","UREDO","URGED","URGER","URGES","URIAL","URINE","URNES","URSID",
 "USAGE","USERS","USHER","USING","USUAL","USURP","USURY","UTERI","UTILE","UTTER",
-"UVEAL","UVEAS","UVULA",
+"UVEAL","UVEAS","UVULA","VACUA","VADED","VADES","VAGAL","VAGUE","VAGUS","VAILS","VAINS","VALES","VALET",
+"VALID","VALOR","VALUE","VALVE","VAMPS","VAMPY","VANED","VANES","VAPID","VAPOR",
+"VARAS","VARIA","VARIX","VARNA","VARUS","VASEL","VASES","VASTS","VASTY","VATIC",
+"VATUS","VAULT","VAUNT","VEALS","VEALY","VEDIC","VEERS","VEERY","VEGAN","VEGES",
+"VEGIE","VEILS","VEINS","VEINY","VELAR","VELDT","VELES","VELLS","VELUM","VENAL",
+"VENDS","VENES","VENGE","VENIN","VENOM","VENTS","VENUE","VERBS","VERGE","VERGY",
+"VERIA","VERIT","VERME","VERMS","VERRE","VERSA","VERSE","VERSO","VERST","VERTS",
+"VERTU","VERVE","VESTA","VESTS","VETCH","VEXED","VEXER","VEXES","VEXIL","VIALS",
+"VIAND","VIBES","VICAR","VICED","VICES","VIDEO","VIERS","VIEWS","VIEWY","VIGAS",
+"VIGIA","VIGIL","VIGOR","VILER","VILLA","VILLI","VILLS","VIMEN","VINAL","VINAS",
+"VINCA","VINED","VINER","VINES","VINIC","VINOS","VINYL","VIOLA","VIOLS","VIPER",
+"VIRAL","VIREO","VIRES","VIRID","VIRLS","VIRUS","VISAS","VISED","VISES","VISID",
+"VISIT","VISOR","VISTA","VITAE","VITAL","VITAS","VITEX","VITRE","VITRO","VITTA",
+"VIVAS","VIVAT","VIVID","VIVRE","VIXEN","VIZIR","VIZOR","VOCAL","VOCES","VODKA",
+"VODUN","VOGUE","VOGUY","VOICE","VOIDS","VOILA","VOILE","VOLAR","VOLED","VOLES",
+"VOLTA","VOLTE","VOLTI","VOLTS","VOLVA","VOMER","VOMIT","VOTED","VOTER","VOTES",
+"VOTIVE","VOUCH","VOUGE","VOUNC","VOWED","VOWEL","VOWER","VOXES","VROUM","VROUW",
+"VULGO","VULNS","VULVA","VYING","WACKE","WACKS","WACKY","WADDY","WADED","WADER",
+"WADES","WADIS","WAFER","WAFTS","WAGED","WAGER","WAGES","WAGON","WAHOO","WAIFS",
+"WAILS","WAINS","WAIST","WAITS","WAIVE","WAKED","WAKEN","WAKER","WAKES","WALDO",
+"WALDS","WALED","WALER","WALES","WALKS","WALLS","WALLY","WALTZ","WAMUS","WANDS",
+"WANED","WANES","WANEY","WANGS","WANLY","WANTS","WARDS","WARED","WARES","WARMS",
+"WARNS","WARPS","WARRE","WARTS","WARTY","WASHY","WASPS","WASPY","WASTE","WASTS",
+"WATCH","WATER","WATTS","WAULS","WAVED","WAVER","WAVES","WAVEY","WAWLS","WAXED",
+"WAXEN","WAXER","WAXES","WEALS","WEANS","WEARS","WEARY","WEAVE","WEBBY","WEBER",
+"WEDGE","WEDGY","WEEDS","WEEDY","WEEKS","WEELS","WEEMS","WEENY","WEEPS","WEEPY",
+"WEEST","WEETS","WEEVI","WEFTS","WEIGH","WEILS","WEIRD","WEIRS","WEKAS","WELCH",
+"WELDS","WELLS","WELLY","WELSH","WELTS","WENCH","WENDS","WENNY","WEREZ","WEROS",
+"WESTS","WETLY","WHACK","WHALE","WHAMS","WHANG","WHAPS","WHARF","WHATS","WHEAL",
+"WHEAT","WHEEL","WHEEN","WHEEP","WHEER","WHEFT","WHELM","WHELP","WHENS","WHERE",
+"WHETS","WHEWS","WHEYS","WHICH","WHIFF","WHIGS","WHILE","WHIMS","WHINE","WHINS",
+"WHINY","WHIPS","WHIPT","WHIRL","WHIRR","WHIRS","WHISH","WHISK","WHIST","WHITE",
+"WHITS","WHITY","WHIZZ","WHOAS","WHOLE","WHOMP","WHOOP","WHOOT","WHORE","WHORL",
+"WHORT","WHOSE","WHOSO","WHUMP","WHYDA","WICCA","WICKS","WIDEN","WIDER","WIDOW",
+"WIDTH","WIELD","WIERY","WIFED","WIFES","WIFEY","WIGGY","WIGHT","WILCO","WILDS",
+"WILED","WILES","WILLS","WILLY","WILTS","WINCE","WINCH","WINDS","WINDY","WINED",
+"WINES","WINEY","WINGS","WINGY","WINKS","WINNY","WINOS","WINZE","WIPED","WIPER",
+"WIPES","WIRED","WIRER","WIRES","WIRRA","WISED","WISER","WISPS","WISPY","WITCH",
+"WITHE","WITHY","WITTY","WIVED","WIVER","WIVES","WIZEN","WIZES","WOADS","WOALD",
+"WOEBE","WOEUL","WOFUL","WOKEN","WOKES","WOLDS","WOMAN","WOMBS","WOMBY","WOMEN",
+"WOMPS","WONGS","WONKY","WONTS","WOODS","WOODY","WOOED","WOOER","WOOLS","WOOLY",
+"WOOPS","WOOSH","WOOTS","WOOZY","WORDS","WORDY","WORKS","WORLD","WORMS","WORMY",
+"WORRY","WORSE","WORST","WORTH","WORTS","WOULD","WOUND","WOVEN","WOWED","WOWEE",
+"WRACK","WRAPS","WRAPT","WRATH","WREAK","WRECK","WRENS","WREST","WRICK","WRIED",
+"WRIER","WRIES","WRING","WRIST","WRITH","WRITE","WRITS","WRONG","WROTE","WROTH",
+"WRUNG","WRYLY","WYNDS","WYVERN","XEBEC","XENIA","XENIC","XENON","XERIC","XEROS",
+"XYLAN","XYLEM","XYLYL","XYSTS","YACHT","YAGIS","YAHOO","YARDS","YARER","YARNS",
+"YAWED","YAWLS","YAWNS","YAWPS","YEANS","YEARN","YEARS","YEAST","YECCH","YELLS",
+"YELPS","YENTA","YERBA","YESES","YETIS","YEUKY","YIELD","YIKES","YILLS","YINCE",
+"YIPES","YODEL","YODES","YODLE","YOGAS","YOGIC","YOGIN","YOGIS","YOKED","YOKEL",
+"YOKES","YOLKS","YOLKY","YOMIM","YONDA","YONDE","YONIS","YORES","YOUNG","YOURS",
+"YOUTH","YOWED","YOWES","YOWLS","YUCCA","YUCKS","YUCKY","YUKES","YULAN","YULES",
+"YUMMY","YUPPY","YURTA","YURTS","ZAFAR","ZAIRE","ZAMIA","ZANZA","ZAPPY","ZARFS",
+"ZAYIN","ZEALS","ZEBEC","ZEBRA","ZEBUS","ZEDAS","ZEINS","ZERDA","ZEROS","ZESTS",
+"ZESTY","ZETAS","ZIBET","ZILCH","ZILLS","ZINCS","ZINCY","ZINEB","ZINES","ZINGS",
+"ZINGY","ZINKY","ZIPPY","ZIRAM","ZITIS","ZLOTE","ZLOTY","ZOAEA","ZOARE","ZOEAE",
+"ZOISM","ZOIST","ZOMBI","ZONAL","ZONED","ZONER","ZONES","ZOONS","ZOOTY","ZORIL",
+"ZORRO","ZOUAV","ZOWIE","ZYGAL","ZYGMA","ZYMES","ZYMOS",
 
 
 
@@ -950,6 +1009,9 @@ function updateKeyboardColors(){
 
 /* Submit Guess */
 
+/* Submit Guess */
+
+
 function submitGuess(){
 
     if(currentGuess.length!==5 || gameOver) return;
@@ -999,16 +1061,55 @@ function submitGuess(){
     updateKeyboardColors();
 
     if(guess===answer){
-        alert("🎉 You solved WORDY!");
-        gameOver=true;
-        return;
-    }
 
-    if(attempts>=maxAttempts){
-        alert("Word was "+answer);
-        gameOver=true;
+alert("🎉 You solved WORDY!");
+gameOver = true;
+        document.getElementById("copy-btn").style.display = "block"; // Show button
+    }
+    else if(attempts >= 6){
+        alert("Game Over! The word was: " + answer);
+        gameOver = true;
+        document.getElementById("copy-btn").style.display = "block"; 
+
+// Show button
+  
+
     }
 }
+/* Share Results Function */
+
+document.getElementById("copy-btn").onclick = function() {
+    let resultText = "WORDY ULTRA RESULT\nAttempts: " + attempts + "/6\n\n";
+    let rows = document.querySelectorAll(".row");
+    
+    // Loop through only the attempts the user made
+    for (let i = 0; i < attempts; i++) {
+        let tiles = rows[i].querySelectorAll(".tile");
+        let rowEmojis = "";
+        
+        tiles.forEach(tile => {
+            if (tile.classList.contains("correct")) {
+                rowEmojis += "🟩"; // Green for Correct
+            } else if (tile.classList.contains("present")) {
+                rowEmojis += "🟨"; // Yellow for Present
+            } else {
+                rowEmojis += "⬛"; // Black for Absent
+            }
+        });
+        resultText += rowEmojis + "\n";
+    }
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(resultText).then(() => {
+        alert("Results copied to clipboard! You can now paste them in a text message.");
+    }).catch(err => {
+        alert("Oops, couldn't copy results: " + err);
+    });
+};
+
+
+
+
 
 </script>
 
